@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Lightning</string>
+    <string name="title_activity_sign_in">SignInActivity</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_reset_password">ResetPasswordActivity</string>
+    <string name="title_activity_phone_verification">PhoneVerificationActivity</string>
+    <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+</resources>

@@ -1,0 +1,62 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/.idea/misc.xml
+/.idea/gradle.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Android specific
+.gradle/
+.idea/
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Jetpack Compose preview cache
+.compose-cache/
+
+# Keystore files (if you use one)
+*.jks
+*.keystore
+
+# Google Services (keep secret!)
+google-services.json
+app/google-services.json
+
+# Misc
+*.log
+*.swp
+
+# Kotlin/Java/Jetpack build outputs
+*.class
+*.dex
+*.apk
+*.ap_
+*.db
+*.lock
+*.zip
+*.jar
+*.so
+*.o
+*.a
+
+
+
+# OS-specific
+Thumbs.db
+ehthumbs.db
+desktop.ini
+*.sublime-workspace
+*.sublime-project
