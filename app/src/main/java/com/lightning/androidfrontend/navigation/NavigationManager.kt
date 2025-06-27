@@ -42,7 +42,7 @@ enum class ROUTES {
 fun MyNavHost(navHostController: NavHostController) {
     val context = LocalContext.current
    // var startDestination = ROUTES.WELCOME_SCREEN.name
-    var startDestination = ROUTES.HOME_SCREEN.name
+    var startDestination = ROUTES.WELCOME_SCREEN.name
 
     val tokenManager = TokenManager(context)
     if(tokenManager.getToken()!=null){

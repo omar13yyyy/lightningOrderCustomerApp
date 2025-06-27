@@ -1,6 +1,7 @@
 package com.lightning.androidfrontend.ui.screens.weclome
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -8,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -29,7 +31,7 @@ fun WelcomeScreen(navigateToSignIn:()-> Unit , navigateToSignUp:()-> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState()).background(color = Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TopSection()
@@ -66,7 +68,7 @@ fun WelcomeScreen(navigateToSignIn:()-> Unit , navigateToSignUp:()-> Unit) {
 
 @Composable
 private fun TopSection() {
-    Box {
+    Box (modifier = Modifier.background(Color.White)){
         Image(
             painter = painterResource(id = R.drawable.ic_sign_in_top),
             contentDescription = null,

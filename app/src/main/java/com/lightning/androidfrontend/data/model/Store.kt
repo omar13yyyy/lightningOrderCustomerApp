@@ -318,6 +318,80 @@ data class OrderInput(
 
 )
 //--------------------------------------------------------
+data class TotalResolved(
+    @SerializedName("orderAR") val orderAR: List<ResolvedOrderItem>,
+    @SerializedName("orderEn") val orderEn: List<ResolvedOrderItem>,
+    @SerializedName("delivery_note") val deliveryNote: String,
+    @SerializedName("total_price") val totalPrice: Double
+)
+
+data class ResolvedOrderItem(
+    @SerializedName("item_name") val itemName: String,
+    @SerializedName("size_name") val sizeName: String,
+    @SerializedName("size_price") val sizePrice: Double,
+    @SerializedName("modifiers") val modifiers: List<ResolvedModifier>,
+    @SerializedName("count") val count: Int,
+    @SerializedName("note") val note: String
+)
+
+data class ResolvedModifier(
+    @SerializedName("title") val title: String,
+    @SerializedName("items") val items: List<ResolvedModifierItem>
+)
+
+data class ResolvedModifierItem(
+    @SerializedName("name") val name: String,
+    @SerializedName("price") val price: Double,
+    @SerializedName("number") val number: Int
+)
+
+
+//--------------------------------------------------------
+
+data class UserOrder(
+    val order_id : String,
+    val status : OrderStatus,
+    val order_details_text :String,
+    val store_name_ar : String,
+    val store_name_en : String,
+    val location_latitude : String,
+    val location_longitude : String,
+    val orders_type : OrdersType,
+    val payment_method : String,
+    val amount : Double,
+    val delivery_fee : Double,
+    val coupon_code : String,
+
+    val created_at : String,
+    )
+
+data class UserOrdersRes(
+    val hasNext: Boolean,
+    val order :List<UserOrder>,
+
+    )
+
+enum class OrderStatus(val label: String) {
+    ACCEPTED("accepted"),
+    REJECTED("rejected"),
+    WITH_DRIVER("with_driver"),
+    DELEVERED("delivered"),
+    CUSTOMER_NOT_RECIVED("customer_not_Received"),
+    DRIVER_NOT_RECIVED("driver_not_Received");
+    override fun toString(): String {
+        return label
+    }
+    //val type = OrdersType.CURRENT
+}
+
+//--------------------------------------------------------
+data class LimitDateOffset(
+    val limit: Int,
+    val offset:String,
+)
+
+//--------------------------------------------------------
+
 data class SendUserOrderParams(
     val longitudes: Double,
     val latitudes:Double,

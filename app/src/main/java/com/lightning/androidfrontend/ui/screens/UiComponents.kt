@@ -52,7 +52,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun Logo(modifier: Modifier) {
 
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = modifier.background(color = Color.White), horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
             painter = painterResource(id = R.drawable.ic_logo),
             contentDescription = "logo",
@@ -64,9 +64,9 @@ fun Logo(modifier: Modifier) {
                         color = orange,
                     )
                 ) {
-                    append("Bahgat ")
+                    append("Lightning ")
                 }
-                append("Food")
+                append("delivery")
             }, style = TextStyle(
                 color = primaryFontColor,
                 fontFamily = cabinFontFamily,

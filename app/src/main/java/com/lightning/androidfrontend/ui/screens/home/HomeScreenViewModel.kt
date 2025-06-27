@@ -25,28 +25,28 @@ import kotlinx.coroutines.withContext
 sealed class GetStoreCategoryState {
     object Idle : GetStoreCategoryState()
     object Loading : GetStoreCategoryState()
-    data class Success(val message: String = "Login Successful") : GetStoreCategoryState()
+    data class Success(val message: String = "Successful") : GetStoreCategoryState()
     data class Error(val error: String) : GetStoreCategoryState()
 }
 
 sealed class GetNearStoresState {
     object Idle : GetNearStoresState()
     object Loading : GetNearStoresState()
-    data class Success(val message: String = "Login Successful") : GetNearStoresState()
+    data class Success(val message: String = "Successful") : GetNearStoresState()
     data class Error(val error: String) : GetNearStoresState()
 }
 
 sealed class GetStoresByCategoryState {
     object Idle : GetStoresByCategoryState()
     object Loading : GetStoresByCategoryState()
-    data class Success(val message: String = "Login Successful") : GetStoresByCategoryState()
+    data class Success(val message: String = "Successful") : GetStoresByCategoryState()
     data class Error(val error: String) : GetStoresByCategoryState()
 }
 
 sealed class GetStoresByTagState {
     object Idle : GetStoresByTagState()
     object Loading : GetStoresByTagState()
-    data class Success(val message: String = "Login Successful") : GetStoresByTagState()
+    data class Success(val message: String = "Successful") : GetStoresByTagState()
     data class Error(val error: String) : GetStoresByTagState()
 }
 
@@ -54,63 +54,75 @@ sealed class GetStoresByTagState {
 sealed class GetTrendStoresState {
     object Idle : GetTrendStoresState()
     object Loading : GetTrendStoresState()
-    data class Success(val message: String = "Login Successful") : GetTrendStoresState()
+    data class Success(val message: String = "Successful") : GetTrendStoresState()
     data class Error(val error: String) : GetTrendStoresState()
 }
 sealed class GetTrendStoresByCategoryState {
     object Idle : GetTrendStoresByCategoryState()
     object Loading : GetTrendStoresByCategoryState()
-    data class Success(val message: String = "Login Successful") : GetTrendStoresByCategoryState()
+    data class Success(val message: String = "Successful") : GetTrendStoresByCategoryState()
     data class Error(val error: String) : GetTrendStoresByCategoryState()
 }
 sealed class GetTrendStoresByTagState {
     object Idle : GetTrendStoresByTagState()
     object Loading : GetTrendStoresByTagState()
-    data class Success(val message: String = "Login Successful") : GetTrendStoresByTagState()
+    data class Success(val message: String = "Successful") : GetTrendStoresByTagState()
     data class Error(val error: String) : GetTrendStoresByTagState()
 }
 */
 sealed class SearchForStoreState {
     object Idle : SearchForStoreState()
     object Loading : SearchForStoreState()
-    data class Success(val message: String = "Login Successful") : SearchForStoreState()
+    data class Success(val message: String = "Successful") : SearchForStoreState()
     data class Error(val error: String) : SearchForStoreState()
 }
 
 sealed class GetWorkShiftsState {
     object Idle : GetWorkShiftsState()
     object Loading : GetWorkShiftsState()
-    data class Success(val message: String = "Login Successful") : GetWorkShiftsState()
+    data class Success(val message: String = "Successful") : GetWorkShiftsState()
     data class Error(val error: String) : GetWorkShiftsState()
 }
 
 sealed class GetStoreProductsState {
     object Idle : GetStoreProductsState()
     object Loading : GetStoreProductsState()
-    data class Success(val message: String = "Login Successful") : GetStoreProductsState()
+    data class Success(val message: String = "Successful") : GetStoreProductsState()
     data class Error(val error: String) : GetStoreProductsState()
 }
 
 sealed class GetCouponDetailsState {
     object Idle : GetCouponDetailsState()
     object Loading : GetCouponDetailsState()
-    data class Success(val message: String = "Login Successful") : GetCouponDetailsState()
+    data class Success(val message: String = "Successful") : GetCouponDetailsState()
     data class Error(val error: String) : GetCouponDetailsState()
 }
 
 sealed class GetCategoryTagsState {
     object Idle : GetCategoryTagsState()
     object Loading : GetCategoryTagsState()
-    data class Success(val message: String = "Login Successful") : GetCategoryTagsState()
+    data class Success(val message: String = "Successful") : GetCategoryTagsState()
     data class Error(val error: String) : GetCategoryTagsState()
 }
 sealed class SendUserOrderState {
     object Idle : SendUserOrderState()
     object Loading : SendUserOrderState()
-    data class Success(val message: String = "Login Successful") : SendUserOrderState()
+    data class Success(val message: String = "Successful") : SendUserOrderState()
     data class Error(val error: String) : SendUserOrderState()
 }
 
+sealed class CurrentCustomerOrderState {
+    object Idle : CurrentCustomerOrderState()
+    object Loading : CurrentCustomerOrderState()
+    data class Success(val message: String = "Successful") : CurrentCustomerOrderState()
+    data class Error(val error: String) : CurrentCustomerOrderState()
+}
+sealed class PreviousCustomerOrderState {
+    object Idle : PreviousCustomerOrderState()
+    object Loading : PreviousCustomerOrderState()
+    data class Success(val message: String = "Successful") : PreviousCustomerOrderState()
+    data class Error(val error: String) : PreviousCustomerOrderState()
+}
 
 class HomeScreenViewModel(
     private val visitorRepository: VisitorRepository,
@@ -615,7 +627,72 @@ private val _sendUserOrderResponse = MutableStateFlow<PostVirtualRes?>(null)
             }
         }
     }
+    //-----------------------------------------------------------------------------
+    private val _currentCustomerOrderResponse = MutableStateFlow<UserOrdersRes?>(null)
+    var currentCustomerOrderResponse = _currentCustomerOrderResponse
 
+    private val _currentCustomerOrderState =
+        MutableStateFlow<CurrentCustomerOrderState>(CurrentCustomerOrderState.Idle)
+    val currentCustomerOrderState: StateFlow<CurrentCustomerOrderState> = _currentCustomerOrderState
+
+    fun currentCustomerOrder(limit :Int ,dateOffset : String) {
+        val param = LimitDateOffset(limit=limit, offset = dateOffset)
+
+        viewModelScope.launch {
+            _currentCustomerOrderState.value = CurrentCustomerOrderState.Loading
+            var res: UserOrdersRes?
+            try {
+                withContext(Dispatchers.IO) {
+
+                    res = visitorRepository.currentCustomerOrder(limitDateOffsetParams = param,token=token)
+                }
+                if (res != null) {
+                    _currentCustomerOrderResponse.value = res as UserOrdersRes
+                    _currentCustomerOrderState.value = CurrentCustomerOrderState.Success()
+                    Log.d("debugTag", "done")
+                }
+            } catch (e: Exception) {
+                Log.e("debugTag", "$e")
+
+                _currentCustomerOrderState.value =
+                    CurrentCustomerOrderState.Error(e.message ?: "Unknown error")
+            }
+        }
+    }
+
+    //-----------------------------------------------------------------------------
+    private val _previousCustomerOrderResponse = MutableStateFlow<UserOrdersRes?>(null)
+    var previousCustomerOrderResponse = _previousCustomerOrderResponse
+
+    private val _previousCustomerOrderState =
+        MutableStateFlow<PreviousCustomerOrderState>(PreviousCustomerOrderState.Idle)
+    val previousCustomerOrderState: StateFlow<PreviousCustomerOrderState> = _previousCustomerOrderState
+
+    fun previousCustomerOrder(limit :Int ,dateOffset : String) {
+
+        val param = LimitDateOffset(limit=limit, offset = dateOffset)
+
+        viewModelScope.launch {
+            _previousCustomerOrderState.value = PreviousCustomerOrderState.Loading
+            var res: UserOrdersRes?
+            try {
+                withContext(Dispatchers.IO) {
+
+                    res = visitorRepository.previousCustomerOrder(limitDateOffsetParams = param,token=token)
+                }
+                if (res != null) {
+                    _previousCustomerOrderResponse.value = res as UserOrdersRes
+                    _previousCustomerOrderState.value = PreviousCustomerOrderState.Success()
+                    Log.d("debugTag", "done")
+                }
+            } catch (e: Exception) {
+                Log.e("debugTag", "$e")
+
+                _previousCustomerOrderState.value =
+                    PreviousCustomerOrderState.Error(e.message ?: "Unknown error")
+            }
+        }
+    }
     //-----------------------------------------------------------------------------
     private val _categoriesWithTags = MutableStateFlow<CategoriesWithTags?>(null)
     val categoriesWithTags: StateFlow<CategoriesWithTags?> = _categoriesWithTags
@@ -671,6 +748,15 @@ private val _sendUserOrderResponse = MutableStateFlow<PostVirtualRes?>(null)
         locationCode = encodeToQuadrants(latitude = entry.latitude, longitude = entry.longitude)
     }
 
+
+
+    //--------------------------order and card-----------------------------------
+
+    private val _selectedOrderDetails = MutableStateFlow<UserOrder?>(null)
+    fun setSelectedOrderDetails(value :UserOrder){
+        _selectedOrderDetails.value =value
+    }
+    val selectedOrderDetails: StateFlow<UserOrder?> = _selectedOrderDetails
     //--------------------------order and card-----------------------------------
     var lastId = -1;
     fun getNewId(): Int {

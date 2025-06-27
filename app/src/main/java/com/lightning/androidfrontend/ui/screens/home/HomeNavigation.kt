@@ -69,6 +69,8 @@ enum class HomeScreens {
     STORE_DETAILS_SCREEN,
     PRODUCT_DETAILS_SCREEN,
     CART,
+    ORDERS,
+    ORDER_DETAILS
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "SuspiciousIndentation")
@@ -152,7 +154,7 @@ fun HomeNavigation(navScreensController: NavController) {
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_home),
-                            contentDescription = "menu",
+                            contentDescription = "Home",
                             tint = Color.White
                         )
                     }
@@ -174,20 +176,20 @@ fun HomeNavigation(navScreensController: NavController) {
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            BottomNavigationItem(selected = selectedItem.value == HomeScreens.MENU,
+                            BottomNavigationItem(selected = selectedItem.value == HomeScreens.ORDERS,
                                 onClick = {firstOpen =false
-                                    selectedItem.value = HomeScreens.MENU },
+                                    selectedItem.value = HomeScreens.ORDERS },
                                 icon = {
                                     Icon(
                                         painter = painterResource(id = R.drawable.ic_menu),
                                         contentDescription = "menu",
-                                        tint = if (selectedItem.value == HomeScreens.MENU) orange else placeholderColor
+                                        tint = if (selectedItem.value == HomeScreens.ORDERS) orange else placeholderColor
                                     )
                                 },
                                 label = {
                                     Text(
-                                        text = "Menu",
-                                        style = navItemTextStyle(selectedItem.value == HomeScreens.MENU)
+                                        text = "Orders",
+                                        style = navItemTextStyle(selectedItem.value == HomeScreens.ORDERS)
                                     )
                                 })
 
@@ -290,7 +292,27 @@ private fun HomeNavHost(
                 locationViewModel=locationViewModel
             )
         }
+        composable(
+            route = HomeScreens.ORDERS.name,
+            enterTransition = { fadeIn(tween(300)) },
+            exitTransition = { fadeOut(tween(300)) },
+        ) {
+            OrdersScreen(
+                homeScreenViewModel= homeScreenViewModel,
+                navController =  navHostController
 
+            )
+        }
+        composable(
+            route = HomeScreens.ORDER_DETAILS.name,
+            enterTransition = { fadeIn(tween(300)) },
+            exitTransition = { fadeOut(tween(300)) },
+        ) {
+            OrderDetails(
+                navController=navHostController,
+                homeScreenViewModel=homeScreenViewModel
+                )
+        }
 
         composable(
             route = HomeScreens.SEARCH.name,

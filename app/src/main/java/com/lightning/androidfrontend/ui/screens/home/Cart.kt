@@ -133,7 +133,7 @@ fun Cart(
                 BillSection(
 
                     homeScreenViewModel=homeScreenViewModel,
-                    deleveryFee = it.delivery_price
+                    deliveryFee = it.delivery_price
                 )
             }
         }
@@ -146,7 +146,7 @@ fun Cart(
 @Composable
 fun BillSection(
     homeScreenViewModel: HomeScreenViewModel,
-    deleveryFee: Double
+    deliveryFee: Double
 ) {
     val context = LocalContext.current
 
@@ -174,8 +174,8 @@ fun BillSection(
                     Column {
                         if(getCouponDetailsResponse == null) {
                             Text(text = priceText(sumTotalOrderPrice(list)))
-                            Text(text = priceText(deleveryFee))
-                            Text(text = priceText(sumTotalOrderPrice(list) + deleveryFee))
+                            Text(text = priceText(deliveryFee))
+                            Text(text = priceText(sumTotalOrderPrice(list) + deliveryFee))
                         }
                         else{
                             val annotatedSales = buildAnnotatedString {
@@ -189,7 +189,7 @@ fun BillSection(
                                 append("${priceText( sumTotalOrderPrice(list)* getCouponDetailsResponse!!.discount_percentage)} ")
 
                             }
-                            val annotatedDelevery = buildAnnotatedString {
+                            val annotateddelivery = buildAnnotatedString {
                                 withStyle(
                                     style = SpanStyle(
                                         textDecoration=  TextDecoration.LineThrough
@@ -197,7 +197,7 @@ fun BillSection(
                                 ) {
                                     append(" ${sumTotalOrderPrice(list)} ")
                                 }
-                                append("${priceText(deleveryFee* getCouponDetailsResponse!!.delivery_discount_percentage)} ")
+                                append("${priceText(deliveryFee* getCouponDetailsResponse!!.delivery_discount_percentage)} ")
 
                             }
                             val annotatedTotal = buildAnnotatedString {
@@ -208,12 +208,12 @@ fun BillSection(
                                 ) {
                                     append(" ${sumTotalOrderPrice(list)+sumTotalOrderPrice(list)} ")
                                 }
-                                append("${priceText(deleveryFee* getCouponDetailsResponse!!.delivery_discount_percentage+
+                                append("${priceText(deliveryFee* getCouponDetailsResponse!!.delivery_discount_percentage+
                                         sumTotalOrderPrice(list)* getCouponDetailsResponse!!.discount_percentage)} ")
 
                             }
                             Text(text = annotatedSales)
-                            Text(text = annotatedDelevery)
+                            Text(text = annotateddelivery)
                             Text(text = annotatedTotal)
                         }
                     }

@@ -184,5 +184,27 @@ override suspend fun getStoresByTag(
         return myRes;
     }
 
+    override suspend fun currentCustomerOrder(limitDateOffsetParams :LimitDateOffset,token: String): UserOrdersRes? {
+        val headers = mutableMapOf<String, String>()
+        headers["Authorization"] = "Bearer $token"
+        val type = object : TypeToken<UserOrdersRes>() {}.type
+        val myRes: UserOrdersRes? = NetworkClient.makeRequest(
+            "GET", bodyData = null,
+            url = order + "currentCustomerOrder?limit=${limitDateOffsetParams.limit}&dateOffset=${limitDateOffsetParams.offset}", responseType = type, headers = headers
+        )
+        return myRes;
+    }
+
+    override suspend fun previousCustomerOrder(limitDateOffsetParams :LimitDateOffset,token: String): UserOrdersRes? {
+        val headers = mutableMapOf<String, String>()
+        headers["Authorization"] = "Bearer $token"
+        val type = object : TypeToken<UserOrdersRes>() {}.type
+        val myRes: UserOrdersRes? = NetworkClient.makeRequest(
+            "GET", bodyData = null,
+            url = order + "previousCustomerOrder?limit=${limitDateOffsetParams.limit}&dateOffset=${limitDateOffsetParams.offset}", responseType = type, headers = headers
+        )
+        return myRes;
+    }
+
 
 }

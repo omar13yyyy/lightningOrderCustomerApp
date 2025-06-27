@@ -36,6 +36,8 @@ interface VisitorApi {
     suspend fun getCouponDetails( getCouponDetailsParams: GetCouponDetailsParams):  GetCouponDetailsRes?
 
     suspend fun sendUserOrder(sendUserOrderParams: SendUserOrderParams,token: String):  PostVirtualRes?
+    suspend fun currentCustomerOrder(limitDateOffsetParams :LimitDateOffset,token: String):  UserOrdersRes?
+    suspend fun previousCustomerOrder(limitDateOffsetParams :LimitDateOffset,token: String):  UserOrdersRes?
 
 
 
